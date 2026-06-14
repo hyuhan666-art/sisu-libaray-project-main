@@ -4,12 +4,9 @@
 
 ## 🎬 部署演示
 
-https://github.com/hyuhan666-art/sisu-libaray-project-main/raw/main/docs/sisu-demo.mp4
+[![部署演示视频](docs/deploy_verify_admin_dashboard.png)](https://github.com/hyuhan666-art/sisu-libaray-project-main/raw/main/docs/sisu-demo.mp4)
 
-<video src="https://github.com/hyuhan666-art/sisu-libaray-project-main/raw/main/docs/sisu-demo.mp4" controls width="100%"></video>
-
-> 若上方播放器未显示，点此查看 / 下载视频：[docs/sisu-demo.mp4](docs/sisu-demo.mp4)
-> 演示内容：登录 → 图书检索 → 借书 / 还书 → 管理后台统计。
+> ▶️ **点击上方截图查看完整演示视频**（登录 → 图书检索 → 借书 / 还书 → 管理后台统计）。
 > 本地一键运行见 [DEPLOY.md](DEPLOY.md)。
 
 ## 技术栈
