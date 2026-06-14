@@ -1,6 +1,16 @@
-# SISU Library Management System - Backend
+# SISU Library Management System
 
-图书管理系统后端 API，基于 Flask 框架开发。
+图书管理系统，Flask 后端 + 静态单页前端（`static/`）+ MySQL + Redis。
+
+## 🎬 部署演示
+
+https://github.com/hyuhan666-art/sisu-libaray-project-main/raw/main/docs/sisu-demo.mp4
+
+<video src="https://github.com/hyuhan666-art/sisu-libaray-project-main/raw/main/docs/sisu-demo.mp4" controls width="100%"></video>
+
+> 若上方播放器未显示，点此查看 / 下载视频：[docs/sisu-demo.mp4](docs/sisu-demo.mp4)
+> 演示内容：登录 → 图书检索 → 借书 / 还书 → 管理后台统计。
+> 本地一键运行见 [DEPLOY.md](DEPLOY.md)。
 
 ## 技术栈
 
