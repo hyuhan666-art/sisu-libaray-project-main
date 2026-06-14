@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SISU 图书管理系统</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- 依赖加载顺序：utils → api → auth → app -->
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+</head>
+<body>
+  <div id="app">
+    <!-- 初始加载态，路由启动后替换 -->
+    <div class="auth-page">
+      <div class="auth-card" style="text-align:center">
+        <h1>📖 SISU 图书管理系统</h1>
+        <p style="color:var(--gray-500);margin-top:12px">加载中…</p>
+        <div class="spinner spinner-lg" style="margin:20px auto"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
