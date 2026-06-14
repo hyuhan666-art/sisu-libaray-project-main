@@ -169,9 +169,10 @@ def add_copy(book_id):
         location=data.get('location', ''),
         purchase_date=date.today()
     )
-    book.total_copies += 1
-    book.available_copies += 1
+    # total_copies / available_copies 由数据库触发器 update_book_copies_after_insert 自动维护，
+    # 这里不再手动 +=，否则会与触发器叠加导致计数 +2（见 init_db.sql）
     db.session.add(copy)
+    db.session.flush()  # 先 flush 让 copy.id 落地，否则下面 InventoryRecord 的 book_copy_id 会是 0，触发外键约束失败
 
     from app.models.inventory import InventoryRecord
     from flask_jwt_extended import get_jwt_identity

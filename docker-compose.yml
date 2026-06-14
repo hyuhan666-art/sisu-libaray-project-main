@@ -1,0 +1,31 @@
+# 一键起 SISU 图书管理系统所需的 MySQL + Redis
+# 用法: docker compose up -d
+# MySQL 首次启动会自动执行 init_db.sql 建库 + 建表/视图/存储过程/触发器
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: sisu-mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+      MYSQL_ROOT_HOST: "%"
+    ports:
+      - "3306:3306"
+    volumes:
+      # 仅在数据卷为空（首次启动）时执行，自动建库 sisu-library
+      - ./init_db.sql:/docker-entrypoint-initdb.d/init_db.sql:ro
+      - sisu_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-uroot", "-p123456"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    container_name: sisu-redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  sisu_mysql_data:
