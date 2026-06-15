@@ -3,7 +3,7 @@
    所有请求走这里：自动带 JWT、拦截 401、统一错误处理
    ============================================================ */
 
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = window.SISU_API_BASE || `${window.location.origin}/api`;
 
 const Api = {
 

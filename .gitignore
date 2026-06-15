@@ -30,3 +30,7 @@ instance/
 # Logs
 *.log
 logs/
+logs-5500-*.txt
+
+# Remotion 视频生成工程（含 node_modules + 渲染产物，体积大，不入库）
+sisu-demo-video/

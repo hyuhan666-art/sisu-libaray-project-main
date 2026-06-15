@@ -135,7 +135,7 @@ const App = {
 
     return `
       <nav class="navbar">
-        <a href="#/books" class="navbar-brand">📖 SISU 图书馆</a>
+        <a href="#/books" class="navbar-brand">📖 SISU 图书管理系统</a>
         <div class="navbar-nav">${links}</div>
         <div class="nav-user">
           ${Auth.isLoggedIn() ? `
@@ -148,28 +148,131 @@ const App = {
       </nav>`;
   },
 
+  _icon(name) {
+    const icons = {
+      logo: '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 5 40 11v12c0 10-6.6 16.5-16 20-9.4-3.5-16-10-16-20V11L24 5Z"/><path d="M17 18c3.2 0 5.4 1 7 3 1.6-2 3.8-3 7-3v12c-3.2 0-5.4 1-7 3-1.6-2-3.8-3-7-3V18Z"/><path d="M24 21v12"/></svg>',
+      home: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>',
+      borrow: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h10a3 3 0 0 1 3 3v11H7a2 2 0 0 1-2-2V5Z"/><path d="M9 9h6"/><path d="M9 13h4"/><path d="m18 8 3 3-3 3"/></svg>',
+      return: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 19H9a3 3 0 0 1-3-3V5h11a2 2 0 0 1 2 2v12Z"/><path d="M15 11H7"/><path d="m10 8-3 3 3 3"/></svg>',
+      records: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18H6z"/><path d="M9 7h6"/><path d="M9 11h6"/><path d="M9 15h4"/></svg>',
+      books: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h6v14H4z"/><path d="M10 5h4v14h-4z"/><path d="m15 6 4-1 3 13-4 1-3-13Z"/></svg>',
+      readers: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M2 21a7 7 0 0 1 14 0"/><path d="M17 11a3 3 0 1 0 0-6"/><path d="M18 15a6 6 0 0 1 4 6"/></svg>',
+      stats: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/></svg>',
+      search: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg>',
+      user: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
+      settings: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/><path d="m4 15-1-3 1-3 3-.5 2-2.5L12 5l3-1 2 2.5 3 .5 1 3-1 3-3 .5-2 2.5-3-1-3 1-2-2.5-3-.5Z"/></svg>',
+      bell: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z"/><path d="M10 21h4"/></svg>',
+      help: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.8 9a2.4 2.4 0 1 1 3.7 2c-1 .7-1.5 1.2-1.5 2.4"/><path d="M12 17h.01"/></svg>',
+      refresh: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6v5h-5"/><path d="M4 18v-5h5"/><path d="M18 11a6 6 0 0 0-10-4l-4 4"/><path d="M6 13a6 6 0 0 0 10 4l4-4"/></svg>',
+      calendar: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v4"/><path d="M17 3v4"/><path d="M4 8h16"/><path d="M5 5h14v16H5z"/></svg>',
+      chevron: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>',
+      stack: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4-8 4-8-4 8-4Z"/><path d="m4 12 8 4 8-4"/><path d="m4 17 8 4 8-4"/></svg>',
+      openbook: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5c3.5 0 6 .8 8 3v12c-2-2.2-4.5-3-8-3V5Z"/><path d="M20 5c-3.5 0-6 .8-8 3v12c2-2.2 4.5-3 8-3V5Z"/></svg>',
+      group: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M2 21a6 6 0 0 1 12 0"/><path d="M17 12a3 3 0 1 0 0-6"/><path d="M17 15a5 5 0 0 1 5 5"/></svg>',
+      clipboard: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h6l1 3H8l1-3Z"/><path d="M6 6h12v15H6z"/><path d="m9 14 2 2 4-5"/></svg>',
+      clock: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+      alert: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 21h20L12 3Z"/><path d="M12 9v5"/><path d="M12 18h.01"/></svg>',
+      plus: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>'
+    };
+    return icons[name] || icons.books;
+  },
+
+  _todayText() {
+    const now = new Date();
+    const weeks = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+    return `${Utils.formatDate(now.toISOString(), 'YYYY-MM-DD')} ${weeks[now.getDay()]}`;
+  },
+
+  _bookThumb(title = '', coverUrl = '') {
+    if (coverUrl) {
+      return `<span class="book-thumb"><img src="${Utils.escape(coverUrl)}" alt="${Utils.escape(title || '图书封面')}" onerror="this.parentElement.innerHTML='<span>${Utils.escape((title || '书').slice(0, 1))}</span>'"></span>`;
+    }
+    const initial = Utils.escape((title || '书').slice(0, 1));
+    return `<span class="book-thumb"><span>${initial}</span></span>`;
+  },
+
+  _readerAvatar(name = '', index = 0) {
+    const initial = Utils.escape((name || '读').slice(0, 1));
+    return `<span class="reader-avatar reader-avatar-${index % 5}">${initial}</span>`;
+  },
+
+  _normalizeTrend(raw = [], days = 30) {
+    const map = new Map(raw.map(item => [String(item.date).slice(0, 10), item.count || 0]));
+    const result = [];
+    const today = new Date();
+    for (let i = days - 1; i >= 0; i -= 1) {
+      const d = new Date(today);
+      d.setDate(today.getDate() - i);
+      const key = Utils.formatDate(d.toISOString(), 'YYYY-MM-DD');
+      result.push({ date: key, count: map.get(key) || 0 });
+    }
+    return result;
+  },
+
+  _renderTrendSvg(raw = [], days = 30) {
+    const data = this._normalizeTrend(raw, days);
+    const width = 720;
+    const height = 250;
+    const padX = 34;
+    const padY = 24;
+    const baseY = height - 34;
+    const max = Math.max(...data.map(d => d.count || 0), 1);
+    const points = data.map((d, i) => {
+      const x = padX + (i * (width - padX * 2)) / Math.max(data.length - 1, 1);
+      const y = baseY - ((d.count || 0) / max) * (height - padY - 58);
+      return { ...d, x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10 };
+    });
+    const line = points.map(p => `${p.x},${p.y}`).join(' ');
+    const area = `${points[0].x},${baseY} ${line} ${points[points.length - 1].x},${baseY}`;
+    const labelIndexes = [0, 6, 12, 18, 24, 29].filter(i => i < points.length);
+    return `
+      <div class="trend-chart">
+        <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="近 ${days} 天借阅趋势">
+          <defs>
+            <linearGradient id="trendArea" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="#168f7c" stop-opacity=".26"/>
+              <stop offset="100%" stop-color="#168f7c" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <g class="trend-grid">
+            <line x1="${padX}" y1="48" x2="${width - padX}" y2="48"/>
+            <line x1="${padX}" y1="92" x2="${width - padX}" y2="92"/>
+            <line x1="${padX}" y1="136" x2="${width - padX}" y2="136"/>
+            <line x1="${padX}" y1="180" x2="${width - padX}" y2="180"/>
+            <line x1="${padX}" y1="${baseY}" x2="${width - padX}" y2="${baseY}"/>
+          </g>
+          <polygon class="trend-area" points="${area}"/>
+          <polyline class="trend-stroke" points="${line}"/>
+          ${points.map(p => `<circle class="trend-dot" cx="${p.x}" cy="${p.y}" r="3"><title>${p.date}: ${p.count}</title></circle>`).join('')}
+          ${labelIndexes.map(i => `<text class="trend-label" x="${points[i].x}" y="240">${points[i].date.slice(5)}</text>`).join('')}
+        </svg>
+      </div>`;
+  },
+
   _renderSidebar() {
     const role = Auth.getRole();
-    const user = Auth.getUser();
     return `
       <aside class="sidebar">
-        <div class="sidebar-brand"><span class="icon">📖</span><span>SISU 图书馆</span></div>
+        <div class="sidebar-brand"><span class="brand-mark">${this._icon('logo')}</span><span>SISU 图书管理系统</span></div>
         <nav class="sidebar-nav">
-          <a href="#/admin/dashboard"><span class="nav-icon">📊</span><span>管理首页</span></a>
-          <a href="#/admin/borrow"><span class="nav-icon">📥</span><span>借书</span></a>
-          <a href="#/admin/return"><span class="nav-icon">📤</span><span>还书</span></a>
-          <a href="#/admin/records"><span class="nav-icon">📋</span><span>借阅记录</span></a>
+          <a href="#/admin/dashboard"><span class="nav-icon">${this._icon('home')}</span><span>管理首页</span><span class="nav-caret">${this._icon('chevron')}</span></a>
+          <a href="#/admin/borrow"><span class="nav-icon">${this._icon('borrow')}</span><span>借书办理</span><span class="nav-caret">${this._icon('chevron')}</span></a>
+          <a href="#/admin/return"><span class="nav-icon">${this._icon('return')}</span><span>还书办理</span><span class="nav-caret">${this._icon('chevron')}</span></a>
+          <a href="#/admin/records"><span class="nav-icon">${this._icon('records')}</span><span>借阅记录</span><span class="nav-caret">${this._icon('chevron')}</span></a>
           <div class="nav-section">管理</div>
-          <a href="#/admin/books"><span class="nav-icon">📚</span><span>图书管理</span></a>
-          <a href="#/admin/readers"><span class="nav-icon">👥</span><span>读者管理</span></a>
-          <a href="#/admin/stats"><span class="nav-icon">📈</span><span>统计分析</span></a>
+          <a href="#/admin/books"><span class="nav-icon">${this._icon('books')}</span><span>图书管理</span><span class="nav-caret">${this._icon('chevron')}</span></a>
+          <a href="#/admin/readers"><span class="nav-icon">${this._icon('readers')}</span><span>读者管理</span><span class="nav-caret">${this._icon('chevron')}</span></a>
+          <a href="#/admin/stats"><span class="nav-icon">${this._icon('stats')}</span><span>统计分析</span><span class="nav-caret">${this._icon('chevron')}</span></a>
           <div class="nav-section">其他</div>
-          <a href="#/books"><span class="nav-icon">🔍</span><span>图书检索</span></a>
-          <a href="#/profile"><span class="nav-icon">👤</span><span>个人中心</span></a>
+          <a href="#/books"><span class="nav-icon">${this._icon('search')}</span><span>图书检索</span><span class="nav-caret">${this._icon('chevron')}</span></a>
+          <a href="#/profile"><span class="nav-icon">${this._icon('settings')}</span><span>系统设置</span><span class="nav-caret">${this._icon('chevron')}</span></a>
         </nav>
         <div class="sidebar-footer">
-          👤 ${Utils.escape(user?.username || '')} · ${Utils.roleLabel(role || '')}<br>
-          <a href="#" class="logout-btn" style="color:var(--gray-500);font-size:0.75rem">退出登录</a>
+          <div class="sidebar-clock-label">系统时间</div>
+          <div class="sidebar-clock" data-clock-time>--:--:--</div>
+          <div class="sidebar-date" data-clock-date>${this._todayText()}</div>
+          <a href="#" class="logout-btn sidebar-logout">${Utils.roleLabel(role || '')} · 退出登录</a>
+          <div class="sidebar-version">© SISU Library v1.0.0</div>
         </div>
       </aside>`;
   },
@@ -189,6 +292,21 @@ const App = {
       const href = a.getAttribute('href');
       if (href === '#' + hash) a.classList.add('active');
     });
+    this._startSidebarClock();
+  },
+
+  _startSidebarClock() {
+    const timeEl = document.querySelector('[data-clock-time]');
+    const dateEl = document.querySelector('[data-clock-date]');
+    if (!timeEl || !dateEl) return;
+    if (this._sidebarClockTimer) clearInterval(this._sidebarClockTimer);
+    const update = () => {
+      const now = new Date();
+      timeEl.textContent = Utils.formatDate(now.toISOString(), 'HH:mm:ss');
+      dateEl.textContent = this._todayText();
+    };
+    update();
+    this._sidebarClockTimer = setInterval(update, 1000);
   },
 
   /* ====== 页面容器 ====== */
@@ -323,6 +441,11 @@ const App = {
       }
       addOpts(cats);
     } catch (e) { /* ignore */ }
+    const presetKeyword = sessionStorage.getItem('sisuBookKeyword') || '';
+    if (presetKeyword) {
+      document.getElementById('search-keyword').value = presetKeyword;
+      sessionStorage.removeItem('sisuBookKeyword');
+    }
     // 搜索
     const doSearch = async () => {
       const params = {
@@ -623,37 +746,170 @@ const App = {
      ================================================================ */
   async renderAdminDashboard() {
     const $p = this.$page();
-    $p.innerHTML = '<div class="page page-wide"><h1 class="page-title">📊 馆藏总览</h1><div id="overview-content"><div class="loading-center"><div class="spinner spinner-lg"></div></div></div></div>';
-    try {
-      const res = await Api.get('/stats/overview');
-      const d = res.data || {};
-      const cards = [
-        { label: '总图书数', value: d.total_books || 0, icon: '📚', accent: 'accent-blue' },
-        { label: '总副本数', value: d.total_copies || 0, icon: '📦', accent: 'accent-blue' },
-        { label: '可借副本', value: d.available_copies || 0, icon: '✅', accent: 'accent-green' },
-        { label: '读者数', value: d.total_readers || 0, icon: '👥', accent: 'accent-blue' },
-        { label: '借阅中', value: d.borrowing || 0, icon: '📗', accent: 'accent-yellow' },
-        { label: '逾期中', value: d.overdue || 0, icon: '⚠️', accent: 'accent-red' },
-        { label: '今日借书', value: d.today_borrow || 0, icon: '📥', accent: 'accent-green' },
-        { label: '今日还书', value: d.today_return || 0, icon: '📤', accent: 'accent-green' },
-      ];
-      document.getElementById('overview-content').innerHTML = `
-        <div class="stat-grid">${cards.map(c => `
-          <div class="stat-card ${c.accent}">
-            <span class="stat-icon">${c.icon}</span>
-            <span class="stat-label">${c.label}</span>
-            <span class="stat-value">${c.value}</span>
-          </div>`).join('')}</div>
-        <div class="btn-group">
-          <button class="btn btn-outline" id="check-overdue-btn">🔍 扫描逾期</button>
+    const user = Auth.getUser() || {};
+    const role = Auth.getRole();
+    $p.innerHTML = `
+      <div class="page page-wide">
+        <div class="dashboard-hero">
+          <div class="dashboard-title-block">
+            <h1 class="page-title">管理首页</h1>
+            <p>图书馆运营概览与关键数据</p>
+          </div>
+          <div class="dashboard-toolbar">
+            <label class="dashboard-search">
+              ${this._icon('search')}
+              <input id="dashboard-global-search" placeholder="搜索图书、读者、功能..." autocomplete="off">
+            </label>
+            <button class="icon-btn" type="button" aria-label="通知">
+              ${this._icon('bell')}
+              <span class="notify-dot">6</span>
+            </button>
+            <button class="icon-btn" type="button" aria-label="帮助">${this._icon('help')}</button>
+            <div class="admin-profile">
+              <span class="admin-avatar">${Utils.escape((user.username || '管').slice(0, 1))}</span>
+              <span><strong>${Utils.escape(user.real_name || user.username || '管理员')}</strong><small>${Utils.roleLabel(role || '')}</small></span>
+            </div>
+            <button class="icon-btn dashboard-logout" type="button" aria-label="退出登录">${this._icon('chevron')}</button>
+          </div>
+          <div class="dashboard-subtools">
+            <span class="date-pill">${this._icon('calendar')} ${this._todayText()}</span>
+            <button class="btn btn-outline" id="dashboard-refresh">${this._icon('refresh')} 刷新数据</button>
+          </div>
         </div>
-        <p class="text-muted mt-1" id="overdue-msg"></p>
+        <div id="overview-content"><div class="loading-center"><div class="spinner spinner-lg"></div></div></div>
       </div>`;
-      document.getElementById('check-overdue-btn').addEventListener('click', async () => {
-        try {
-          const r = await Api.post('/borrow/overdue/check');
-          document.getElementById('overdue-msg').textContent = r.message || `已标记 ${r.data?.updated || 0} 条逾期`;
-        } catch (e) { /* toast */ }
+    document.getElementById('dashboard-global-search')?.addEventListener('keydown', e => {
+      if (e.key !== 'Enter') return;
+      const keyword = e.target.value.trim();
+      if (keyword) sessionStorage.setItem('sisuBookKeyword', keyword);
+      this.navigateTo('/books');
+    });
+    document.getElementById('dashboard-refresh')?.addEventListener('click', () => this.renderAdminDashboard());
+    document.querySelector('.dashboard-logout')?.addEventListener('click', () => {
+      Auth.logout();
+      this.navigateTo('/login');
+    });
+    try {
+      const [overviewRes, trendRes, popularRes, readerRes, booksRes] = await Promise.allSettled([
+        Api.get('/stats/overview'),
+        Api.get('/stats/borrow-trend', { days: 30 }),
+        Api.get('/stats/popular-books', { limit: 5 }),
+        Api.get('/stats/reader-activity', { limit: 5 }),
+        Api.get('/books', { page: 1, per_page: 5 })
+      ]);
+      if (overviewRes.status !== 'fulfilled') throw overviewRes.reason;
+
+      const d = overviewRes.value.data || {};
+      const fmt = n => Number(n || 0).toLocaleString('zh-CN');
+      const cards = [
+        { label: '馆藏总量', value: d.total_books || 0, unit: '册', icon: 'stack', accent: 'stat-teal', delta: `较昨日 +${d.today_borrow || 0} 册` },
+        { label: '可借数量', value: d.available_copies || 0, unit: '册', icon: 'openbook', accent: 'stat-blue', delta: `可流通 ${fmt(d.available_copies || 0)} 册` },
+        { label: '读者总数', value: d.total_readers || 0, unit: '人', icon: 'group', accent: 'stat-orange', delta: `活跃借阅 ${fmt(d.borrowing || 0)} 人次` },
+        { label: '今日借出', value: d.today_borrow || 0, unit: '册', icon: 'clipboard', accent: 'stat-green', delta: `逾期 ${fmt(d.overdue || 0)} 条` },
+        { label: '今日归还', value: d.today_return || 0, unit: '册', icon: 'clock', accent: 'stat-amber', delta: '实时同步更新' }
+      ];
+      const trend = trendRes.status === 'fulfilled' ? (trendRes.value.data || []) : [];
+      const trendHtml = this._renderTrendSvg(trend, 30);
+
+      const popular = popularRes.status === 'fulfilled' ? (popularRes.value.data || []) : [];
+      const popularHtml = popular.map((b, i) => `
+        <div class="ranking-item">
+          <span class="ranking-rank">${i + 1}</span>
+          ${this._bookThumb(b.title)}
+          <div class="ranking-main">
+            <div class="ranking-title">${Utils.escape(b.title || '-')}</div>
+            <div class="ranking-sub">${Utils.escape(b.author || '')}</div>
+          </div>
+          <span class="ranking-meta">借阅 ${b.total_borrows || 0} 次</span>
+        </div>`).join('');
+
+      const readers = readerRes.status === 'fulfilled' ? (readerRes.value.data || []) : [];
+      const readerHtml = readers.map((r, i) => `
+        <div class="ranking-item">
+          <span class="ranking-rank">${i + 1}</span>
+          ${this._readerAvatar(r.real_name || r.username || '-', i)}
+          <div class="ranking-main">
+            <div class="ranking-title">${Utils.escape(r.real_name || r.username || '-')}</div>
+            <div class="ranking-sub">读者证：${Utils.escape(r.card_number || '-')}</div>
+          </div>
+          <span class="ranking-meta">借阅 ${r.total_borrows || 0} 次</span>
+        </div>`).join('');
+
+      const bookData = booksRes.status === 'fulfilled' ? (booksRes.value.data || {}) : {};
+      const latestBooks = bookData.items || [];
+      const bookRows = latestBooks.map(b => `
+        <tr>
+          <td><div class="book-cell">${this._bookThumb(b.title, b.cover_url)}<span>${Utils.escape(b.title || '-')}</span></div></td>
+          <td>${Utils.escape(b.author || '-')}</td>
+          <td>${Utils.escape(b.isbn || '-')}</td>
+          <td>${Utils.escape(b.category_name || '未分类')}</td>
+          <td>${fmt(b.total_copies || 0)}</td>
+          <td>${fmt(b.available_copies || 0)}</td>
+          <td>${Utils.formatDate(b.created_at)}</td>
+          <td class="table-actions">
+            <button class="link-btn dashboard-edit-book" data-id="${b.id}">编辑</button>
+            <button class="link-btn dashboard-copies-book" data-id="${b.id}">复制条码</button>
+          </td>
+        </tr>`).join('');
+
+      document.getElementById('overview-content').innerHTML = `
+        <div class="stat-grid dashboard-stat-grid">${cards.map(c => `
+          <div class="stat-card ${c.accent}">
+            <span class="stat-icon">${this._icon(c.icon)}</span>
+            <span class="stat-label">${c.label}</span>
+            <span class="stat-value">${fmt(c.value)} <small>${c.unit}</small></span>
+            <span class="stat-delta">${c.delta}</span>
+          </div>`).join('')}</div>
+        <div class="dashboard-main-grid">
+          <div class="card overview-panel trend-panel">
+            <div class="card-header">
+              <span>借阅趋势 <em>近30天</em></span>
+              <select class="mini-select" aria-label="趋势周期"><option>近30天</option></select>
+            </div>
+            <div class="card-body">
+              ${trendHtml}
+            </div>
+          </div>
+          <div class="card overview-panel">
+            <div class="card-header"><span>热门图书 <em>TOP 5</em></span><a href="#/admin/stats">查看全部</a></div>
+            <div class="card-body ranking-list">${popularHtml || '<p class="text-muted">暂无热门图书数据</p>'}</div>
+          </div>
+          <div class="card overview-panel">
+            <div class="card-header"><span>读者活跃榜 <em>本月</em></span><a href="#/admin/readers">查看全部</a></div>
+            <div class="card-body ranking-list">${readerHtml || '<p class="text-muted">暂无读者活跃数据</p>'}</div>
+          </div>
+        </div>
+        <div class="card dashboard-table-card mt-3">
+          <div class="card-header">
+            <span>图书管理 <em>最新入库</em></span>
+            <div class="table-header-tools">
+              <label class="table-search">${this._icon('search')}<input id="dashboard-book-search" placeholder="搜索书名、作者、ISBN..."></label>
+              <button class="btn btn-primary" id="dashboard-add-book">${this._icon('plus')} 新增图书</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="dashboard-book-table">
+              <thead><tr><th>书名</th><th>作者</th><th>ISBN</th><th>分类</th><th>馆藏数量</th><th>可借数量</th><th>入库日期</th><th>操作</th></tr></thead>
+              <tbody>${bookRows || '<tr><td colspan="8" class="text-center text-muted">暂无图书数据</td></tr>'}</tbody>
+            </table>
+          </div>
+          <div class="dashboard-table-footer">
+            <span>共 ${fmt(bookData.total || latestBooks.length)} 条</span>
+            <a href="#/admin/books">进入完整图书管理</a>
+          </div>
+        </div>`;
+      document.getElementById('dashboard-book-search')?.addEventListener('input', e => {
+        const keyword = e.target.value.trim().toLowerCase();
+        document.querySelectorAll('.dashboard-book-table tbody tr').forEach(row => {
+          row.style.display = row.innerText.toLowerCase().includes(keyword) ? '' : 'none';
+        });
+      });
+      document.getElementById('dashboard-add-book')?.addEventListener('click', () => this._showBookForm());
+      document.querySelectorAll('.dashboard-edit-book').forEach(btn => {
+        btn.addEventListener('click', () => this._showBookForm(btn.dataset.id));
+      });
+      document.querySelectorAll('.dashboard-copies-book').forEach(btn => {
+        btn.addEventListener('click', () => this._showCopies(btn.dataset.id));
       });
     } catch (e) {
       document.getElementById('overview-content').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><p>加载失败，请检查后端和数据库</p></div>';
